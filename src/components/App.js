@@ -1,5 +1,7 @@
 import React, { useState,useReducer } from "react";
 import "./../styles/App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 
 const states = [{
@@ -141,10 +143,108 @@ const states = [{
 function App() 
 {
 	// Do not alter/remove main div
+
+
+	  const [selectedStateIndex, setSelectedStateIndex] = useState(0);
+  const [selectedCityIndex, setSelectedCityIndex] = useState(0);
+  const [selectedLandmarkIndex, setSelectedLandmarkIndex] = useState(0);
+
+  const selectedState = states[selectedStateIndex];
+  const selectedCity = selectedState.city[selectedCityIndex];
+  const selectedLandmark = selectedCity.landmarks[selectedLandmarkIndex];
+
+  const handleStateChange = (e) => {
+    const index = parseInt(e.target.value);
+    setSelectedStateIndex(index);
+    setSelectedCityIndex(0);
+    setSelectedLandmarkIndex(0);
+  };
+
+  const handleCityChange = (e) => {
+    const index = parseInt(e.target.value);
+    setSelectedCityIndex(index);
+    setSelectedLandmarkIndex(0);
+  };
+
+  const handleLandmarkChange = (e) => {
+    setSelectedLandmarkIndex(parseInt(e.target.value));
+  };
+
+	
+
+	
 	return (
-	<div id="main">
-		
-	</div>
+   <div id="main" className="container mt-4">
+      <h2 className="mb-4">Dropdown React App</h2>
+
+      <div className="mb-3">
+        <label htmlFor="state" className="form-label">
+          Select State
+        </label>
+        <select
+          id="state"
+          className="form-select"
+          value={selectedStateIndex}
+          onChange={handleStateChange}
+        >
+          {states.map((state, index) => (
+            <option key={index} value={index}>
+              {state.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="city" className="form-label">
+          Select City
+        </label>
+        <select
+          id="city"
+          className="form-select"
+          value={selectedCityIndex}
+          onChange={handleCityChange}
+        >
+          {selectedState.city.map((city, index) => (
+            <option key={index} value={index}>
+              {city.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="landmark" className="form-label">
+          Select Landmark
+        </label>
+        <select
+          id="landmark"
+          className="form-select"
+          value={selectedLandmarkIndex}
+          onChange={handleLandmarkChange}
+        >
+          {selectedCity.landmarks.map((landmark, index) => (
+            <option key={index} value={index}>
+              {landmark.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mt-4">
+        <h4>Selected State</h4>
+        <div id="state-name">{selectedState.name}</div>
+        <div id="state-description">{selectedState.description}</div>
+
+        <h4 className="mt-3">Selected City</h4>
+        <div id="city-name">{selectedCity.name}</div>
+        <div id="city-description">{selectedCity.description}</div>
+
+        <h4 className="mt-3">Selected Landmark</h4>
+        <div id="landmark-name">{selectedLandmark.name}</div>
+        <div id="landmark-description">{selectedLandmark.description}</div>
+      </div>
+    </div>
 	);
 }
 
